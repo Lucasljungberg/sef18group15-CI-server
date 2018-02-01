@@ -4,25 +4,28 @@ import java.lang.Runtime;
 import java.lang.Process;
 import java.lang.InterruptedException;
 import java.io.IOException;
+import java.io.File;
 
 public class Command {
 
     public static void main (String[] args) {
-        System.out.println(Command.execute("asd"));
+        System.out.println(Command.execute("asd", System.getProperty("user.dir")));
     }
 
     /**
      * Executes a terminal command in a seperate process.
      * A non-found command results in an IOException.
-     * @param  line the command line to be executed
+     * @param  line   the command line to be executed
+     * @param  target the directory from which to exectue the command
      * @return      the exit value of the command. -1 if the process was interrupted. 
      *              -2 in case of IOException.
      */
-    public static int execute (String line) {
+    public static int execute (String line, String target) {
+        File targetDir = new File(target);
         Runtime rt = Runtime.getRuntime();
         Process pr;
         try {
-            pr = rt.exec(line);
+            pr = rt.exec(line, null, targetDir);
         } catch (IOException e) {
             pr = null;
         }
