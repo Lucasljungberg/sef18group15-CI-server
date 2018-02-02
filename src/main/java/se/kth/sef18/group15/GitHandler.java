@@ -117,6 +117,7 @@ public class GitHandler {
             cc.call();
             return true;
         } catch (GitAPIException e) {
+            e.printStackTrace();
             return false;
         }
     }
