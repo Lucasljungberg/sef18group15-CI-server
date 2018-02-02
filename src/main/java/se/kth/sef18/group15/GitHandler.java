@@ -78,7 +78,7 @@ public class GitHandler {
         this.cc.setTransportConfigCallback( new TransportConfigCallback () {
 
             /**
-             * Configure the transport using the previously used SSH-identity
+             * Configure the transport using the previously created SSH-identity
              */
             @Override
             public void configure ( Transport transport ) {
@@ -91,17 +91,28 @@ public class GitHandler {
     /**
      * Fetches the build and saves in the target directory as a dir
      * with the GitInfo's hash value as directory name.
+     * Will fetch to <project root>/builds/<buildHash>
      * @return true if no errors, false otherwise
      */
     public boolean fetch () {
         String rootDir = System.getProperty("user.dir");
         File buildDir = new File(rootDir, "builds");
+        return this.fetch(buildDir);
+    }
 
-        if (!buildDir.exists()) {
-            buildDir.mkdir();
+    /**
+     * Fetches the build and saves in the target directory as a dir
+     * with the GitInfo's hash value as directory name.
+     * @param targetDir the directory to fetch the build to such that
+     *                  it is stored in <targetDir>/<buildHash>
+     * @return          true if no errors, false otherwise
+     */
+    public boolean fetch (File targetDir) {
+        if (!targetDir.exists()) {
+            targetDir.mkdir();
         } 
 
-        this.cc.setDirectory(new File(buildDir.toString(), this.info.buildHash));
+        this.cc.setDirectory(new File(targetDir.toString(), this.info.buildHash));
         try {
             cc.call();
             return true;

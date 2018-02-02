@@ -27,6 +27,6 @@ public class GitHandlerTest {
     @Test
     public void testGitFetch () {
         System.out.println("Testing git fetch... may take a few seconds...");
-        assertTrue(this.gh.fetch());
+        assertTrue(this.gh.fetch(new File(System.getProperty("java.io.tmpdir"), "CIServerBuilds")));
     }
 }
