@@ -1,5 +1,6 @@
 package se.kth.sef18.group15;
 
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -12,11 +13,11 @@ public class GitHandlerTest {
     public void setUp () {
         this.info = new GitInfo();
 
-        this.info.ref = "refs/heads/pow";
+        this.info.ref = "pow";
         this.info.after = "8293ncf972yb9c72b989782y79c2b792";
         this.info.pusher.name = "lucasljungberg";
         this.info.repository.pushed_at = new Long(1778800);
-        this.info.repository.ssh_url = "git@github.com:Lucasljungberg/jenkins-first.git";
+        this.info.repository.ssh_url = "git@github.com:Lucasljungberg/sef18group15-decide.git";
     }
 
     /**
