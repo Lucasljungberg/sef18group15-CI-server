@@ -43,8 +43,8 @@ public class GitHandler {
 
     private void gitSetup () {
         this.cc = Git.cloneRepository();
-        this.cc.setURI(this.info.sshUrl);
-        this.cc.setBranch(this.info.branch);
+        this.cc.setURI(this.info.repository.ssh_url);
+        this.cc.setBranch(this.info.ref);
 
         SshSessionFactory ssh = new JschConfigSessionFactory () {
 
@@ -112,7 +112,7 @@ public class GitHandler {
             targetDir.mkdir();
         } 
 
-        this.cc.setDirectory(new File(targetDir.toString(), this.info.buildHash));
+        this.cc.setDirectory(new File(targetDir.toString(), this.info.after));
         try {
             cc.call();
             return true;
