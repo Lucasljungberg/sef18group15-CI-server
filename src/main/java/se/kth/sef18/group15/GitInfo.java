@@ -1,26 +1,29 @@
 package se.kth.sef18.group15;
+
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 
-public class GitInfo{
+public class GitInfo {
 	String ref;
 	String after;
 	Repository repository;
 	Pusher pusher;
 
+    class Pusher {
+    	String name;
+    }
 
-class Pusher{
-	String name;
-}
-
-
-class Repository{
+    class Repository {
 		Long pushed_at;
 		String ssh_url;
 	}
 
+    public GitInfo () {
+        this.repository = new Repository();
+        this.pusher = new Pusher();
+    }
 
-/**
+    /**
      * Returns a string representation of the object as key-value pairs
      * @return a string as key-value pairs
      */
@@ -33,6 +36,3 @@ class Repository{
 
 
 }
-
-
-
