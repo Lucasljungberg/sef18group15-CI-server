@@ -13,7 +13,7 @@ public class JsonPackageTest {
     * A Stripped down json package to run a test.
     *@json A String that contain the critical information.
 */
-    String json ="{ 'ref': 'refs/heads/branch', 'after': '1234567890', 'repository': { 'ssh_url': 'https://github.com/User1/Branch', 'pushed_at': 12345 },  'pusher': {'name': 'User1'  } }";
+    String json ="{ 'ref': 'refs/heads/branch', 'after': '1234567890', 'repository': { 'ssh_url': 'https://github.com/User1/Branch', 'pushed_at': 12345, 'statuses_url': 'https://api.github.com/repos/User1/statuses/1234567890' },  'pusher': {'name': 'User1'  } }";
 
 
 
