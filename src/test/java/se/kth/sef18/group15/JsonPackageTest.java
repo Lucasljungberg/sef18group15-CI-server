@@ -9,12 +9,24 @@ import java.io.StringReader;
 
 public class JsonPackageTest { 
 
+/*
+    * A Stripped down json package to run a test.
+    *@json A String that contain the critical information.
+*/
     String json ="{ 'ref': 'refs/heads/branch', 'after': '1234567890', 'repository': { 'ssh_url': 'https://github.com/User1/Branch', 'pushed_at': 12345 },  'pusher': {'name': 'User1'  } }";
 
 
-    GitInfo info = new Gson().fromJson(new BufferedReader(new StringReader(json)), GitInfo.class);  
+
+/*
+    *Tests that JsonPackage.readURL return an object of converted jsonpackage to java
+ */
+    GitInfo info = JsonPackage.readURL(new BufferedReader (new StringReader(json)));
 
 
+/*
+    *Tests that the mapping of the nested objects of the jsonpackage is implemented correctly in GitInfo.
+    
+*/
 	@Test
 	public void testRef(){
 		assertEquals("refs/heads/branch", info.ref);
