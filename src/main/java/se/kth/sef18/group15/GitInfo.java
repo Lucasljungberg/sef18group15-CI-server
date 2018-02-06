@@ -11,6 +11,7 @@ public class GitInfo {
 
     class Pusher {
     	String name;
+		String email;
     }
 
     class Repository {
