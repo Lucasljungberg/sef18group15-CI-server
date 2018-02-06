@@ -16,6 +16,7 @@ public class GitInfo {
     class Repository {
 		Long pushed_at;
 		String ssh_url;
+        String statuses_url;
 	}
 
     public GitInfo () {
@@ -28,8 +29,8 @@ public class GitInfo {
      * @return a string as key-value pairs
      */
     public String toString () {
-        return String.format("{'ref': '%s', 'after': '%s', 'ssh_url': '%s', 'pushed_at': %d, 'name': '%s'}",
-            this.ref, this.after, this.repository.ssh_url, 
+        return String.format("{'ref': '%s', 'after': '%s', 'ssh_url': '%s', 'statuses_url': %s, 'pushed_at': %d, 'name': '%s'}",
+            this.ref, this.after, this.repository.ssh_url, this.repository.statuses_url,
             this.repository.pushed_at, this.pusher.name
         );
     }
