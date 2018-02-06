@@ -145,8 +145,13 @@ public class Config {
 
         this.loadSshLocation(json);
         this.loadAuthenticationType(json);
+        try {
+            this.loadCredentials(json);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
         this.loadNotificationType(json);
-        this.loadCredentials(json);
         this.loadGitUrl(json);
     }
 
@@ -183,7 +188,7 @@ public class Config {
      * Loads the given notification-type
      * @param json HashMap containing key-value pair from the settings-file     
      */
-    private void loadNotificationType(HashMap<String,String> json) {
+    private void loadNotificationType(HashMap<String,String> json) throws IllegalArgumentException {
         if(json.containsKey("notification_type")){
             switch(json.get("notification_type").toLowerCase()){
                 case "none":
@@ -193,6 +198,9 @@ public class Config {
                     this.notType = NotificationType.EMAIL;
                     break;
                 case "commitstatus":
+                    if (this.getAuthenticationType() != AuthenticationType.LOGIN) {
+                        throw new IllegalArgumentException("User-pass credentials needed for commit-status notification");    
+                    }
                     this.notType = NotificationType.COMMITSTATUS;
                     break;
             }
