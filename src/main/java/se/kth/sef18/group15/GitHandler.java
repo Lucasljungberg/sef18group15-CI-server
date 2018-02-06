@@ -3,10 +3,13 @@ package se.kth.sef18.group15;
 import java.io.File;
 import java.nio.file.Path;
 
+import java.lang.IllegalArgumentException;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.TransportConfigCallback;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.transport.SshSessionFactory;
 import org.eclipse.jgit.transport.JschConfigSessionFactory;
 import org.eclipse.jgit.transport.OpenSshConfig;
@@ -31,17 +34,39 @@ public class GitHandler {
      * The Git clone object to handle the build-fetching
      */
      private CloneCommand cc;
+
+    /**
+     * Instance of config object to fetch information about
+     * authentication and repo
+     */
+     private Config config;
     
     /**
      * Creates a new Git-handler for given repository
      * @param info a Github info object for the repository/branch to check
      */
-    public GitHandler (GitInfo info) {
+    public GitHandler (GitInfo info) throws IllegalArgumentException {
         this.info = info;
-        this.gitSetup();
+        this.config = Config.getConfig();
+        switch (this.config.getAuthenticationType()) {
+            case SSH:
+                this.gitSshSetup();
+                break;
+            case LOGIN:
+                this.gitLoginSetup();
+                break;
+            case PUBLIC:
+                this.gitPublicSetup();
+            default:
+                throw new IllegalArgumentException("No authentication type defined");
+        }
     }
 
-    private void gitSetup () {
+
+    /**
+     * Fixes Git-authentication with SSH-keys
+     */
+    private void gitSshSetup () {
         this.cc = Git.cloneRepository();
         this.cc.setURI(this.info.repository.ssh_url);
         this.cc.setBranch(this.info.ref);
@@ -86,6 +111,27 @@ public class GitHandler {
                 sshTransport.setSshSessionFactory( ssh );
             }
         });
+    }
+
+    /**
+     * Sets up Git authentication with user-pass combination
+     */
+    private void gitLoginSetup () {
+        this.cc = Git.cloneRepository();
+        this.cc.setURI(this.info.repository.ssh_url);
+        this.cc.setBranch(this.info.ref);
+        this.cc.setCredentialsProvider(
+            new UsernamePasswordCredentialsProvider(
+                this.config.getUsername(), this.config.getPassword()));
+    }
+
+    /**
+     * Sets up Git fetching where no authentication is needed
+     */
+    private void gitPublicSetup () {
+        this.cc = Git.cloneRepository();
+        this.cc.setURI(this.info.repository.ssh_url);
+        this.cc.setBranch(this.info.ref);
     }
 
     /**

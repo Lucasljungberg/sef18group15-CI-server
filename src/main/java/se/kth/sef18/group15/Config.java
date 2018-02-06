@@ -228,6 +228,14 @@ public class Config {
     }
 
     /**
+     * Reloads the config file by re-reading information from 
+     * the settings file
+     */
+    public static void reload () {
+        instance = new Config(); 
+    }
+
+    /**
      * Retrieve the single config instance
      */
     public static Config getConfig () {
