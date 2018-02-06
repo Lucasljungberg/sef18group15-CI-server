@@ -1,1 +1,8 @@
-{	"auth_type": "login",	"notification_type": "email",	"username": "testuser",	"password": "testpass",	"repo_url": "https://github.com/Lucasljungberg/sef18group15-CI-server"}
+{
+    "auth_type": "login",
+    "username": "testuser",
+    "password": "testpass",
+    "notification_type": "commitstatus",
+    "email_sender": "example@example.com",
+    "email_password": "someexamplepass"
+}

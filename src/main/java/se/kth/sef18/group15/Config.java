@@ -33,7 +33,7 @@ public class Config {
     public enum NotificationType {
         NONE,
         EMAIL,
-        COMMITSTATUS   
+        COMMITSTATUS
     }
 
     /**
@@ -46,7 +46,7 @@ public class Config {
      * File-object targeting the private SSH-identity.
      * Only fetchable if authentication type is SSH.
      */
-    private File sshID = new File("~/.ssh/id_rsa");
+    private File sshID = new File(System.getProperty("user.home"), ".ssh/id_rsa");
 
     /**
      * Given username and password for user-pass authentication method.
@@ -64,6 +64,13 @@ public class Config {
      * Path to settings-file
      */
     private final File settingsPath = new File ( System.getProperty("user.dir"), "config/settings.json");
+
+    /**
+     * EMail credentials.
+     * Only fetchable when notification-type is EMAIL
+     */
+     private String emailSender = "";
+     private String emailPassword = "";
 
     /**
      * Sets the default constructor to private to prevent new instances
@@ -129,6 +136,30 @@ public class Config {
     }
 
     /**
+     * Returns the sender email. Only returns the value if notification-type is
+     * EMAIL.
+     * @return the sender email. If notification-type is not EMAIL, null is returned
+     */
+     public String getEmailSender () {
+         if (this.notType == NotificationType.EMAIL)
+            return this.emailSender;
+        else return null;
+     }
+
+     /**
+      * Returns the sender email password. Only returns the value
+      * if notification-type is EMAIL.
+      * @return the sender email password. If notification-type is
+      *             not EMAIL, null is returned
+      */
+      public String getEmailPassword () {
+          if (this.notType == NotificationType.EMAIL)
+             return this.emailPassword;
+         else return null;
+      }
+
+
+    /**
      * Loads settings from settings-file
      */
     private void loadSettingsFromFile () {
@@ -139,7 +170,6 @@ public class Config {
             System.err.println("Settings file could not be found. Using default values.");
             return;
         }
-
         Type type = new TypeToken<HashMap<String, String>>(){}.getType();
         HashMap<String, String> json = (new Gson()).fromJson(reader, type );
 
@@ -153,6 +183,7 @@ public class Config {
         }
         this.loadNotificationType(json);
         this.loadGitUrl(json);
+        this.loadEmailCredentials(json);
     }
 
     /**
@@ -162,7 +193,7 @@ public class Config {
     private void loadSshLocation (HashMap<String, String> json) {
         if (json.containsKey("ssh_id_location")) {
             this.sshID = new File(json.get("ssh_id_location"));
-        } 
+        }
     }
 
     /**
@@ -186,7 +217,7 @@ public class Config {
     }
     /**
      * Loads the given notification-type
-     * @param json HashMap containing key-value pair from the settings-file     
+     * @param json HashMap containing key-value pair from the settings-file
      */
     private void loadNotificationType(HashMap<String,String> json) throws IllegalArgumentException {
         if(json.containsKey("notification_type")){
@@ -199,7 +230,7 @@ public class Config {
                     break;
                 case "commitstatus":
                     if (this.getAuthenticationType() != AuthenticationType.LOGIN) {
-                        throw new IllegalArgumentException("User-pass credentials needed for commit-status notification");    
+                        throw new IllegalArgumentException("User-pass credentials needed for commit-status notification");
                     }
                     this.notType = NotificationType.COMMITSTATUS;
                     break;
@@ -229,6 +260,17 @@ public class Config {
     }
 
     /**
+     * Loads the email-credentials from the settings-file
+     * @param json HashMap containing key-value pair from the settings-file
+     */
+     private void loadEmailCredentials(HashMap<String, String> json) {
+         if (json.containsKey("email_sender") && json.containsKey("email_password")) {
+             this.emailSender = json.get("email_sender");
+             this.emailPassword = json.get("email_password");
+         }
+     }
+
+    /**
      * Create the instance at class-load time
      */
     static {
@@ -236,11 +278,11 @@ public class Config {
     }
 
     /**
-     * Reloads the config file by re-reading information from 
+     * Reloads the config file by re-reading information from
      * the settings file
      */
     public static void reload () {
-        instance = new Config(); 
+        instance = new Config();
     }
 
     /**

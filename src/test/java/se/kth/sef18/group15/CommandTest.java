@@ -13,7 +13,7 @@ public class CommandTest {
     public void setUp () {
         this.root = System.getProperty("user.dir");
     }
-    
+
 
     @Test
     public void testSuccessfulCase () {
@@ -34,5 +34,10 @@ public class CommandTest {
     @Test
     public void testCommandInDifferentDir () {
         assertEquals(0, Command.execute("ls", ( new File(this.root, "src" ).toString())));
+    }
+
+    @Test
+    public void testMvnCommand () {
+        assertEquals(0, Command.execute("mvn -v", this.root));
     }
 }

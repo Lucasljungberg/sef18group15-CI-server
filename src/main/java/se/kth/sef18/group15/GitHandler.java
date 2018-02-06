@@ -1,6 +1,7 @@
 package se.kth.sef18.group15;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 
 import java.lang.IllegalArgumentException;
@@ -40,7 +41,7 @@ public class GitHandler {
      * authentication and repo
      */
      private Config config;
-    
+
     /**
      * Creates a new Git-handler for given repository
      * @param info a Github info object for the repository/branch to check
@@ -67,6 +68,7 @@ public class GitHandler {
      * Fixes Git-authentication with SSH-keys
      */
     private void gitSshSetup () {
+        System.out.println("Using ssh..");
         this.cc = Git.cloneRepository();
         this.cc.setURI(this.info.repository.ssh_url);
         this.cc.setBranch(this.info.ref);
@@ -89,12 +91,15 @@ public class GitHandler {
             @Override
             public JSch createDefaultJSch (FS fs) {
                 String root = System.getProperty("user.dir");
-                JSch defaultJSch;
+                JSch defaultJSch = null;
                 try {
                     defaultJSch = super.createDefaultJSch(fs);
-                    defaultJSch.addIdentity((new File(root)).toPath().resolve("config").resolve("id_rsa").toString());
+                    defaultJSch.addIdentity(config.getSshIdLocation().toString());
                 } catch (JSchException e) {
                     defaultJSch = null;
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    System.err.println("Cannot find given SSH-identity!");
                 }
                 return defaultJSch;
             }
@@ -156,9 +161,14 @@ public class GitHandler {
     public boolean fetch (File targetDir) {
         if (!targetDir.exists()) {
             targetDir.mkdir();
-        } 
+        }
 
-        this.cc.setDirectory(new File(targetDir.toString(), this.info.after));
+        File buildDir = new File (targetDir.toString(), this.info.after);
+        if (buildDir.exists()) {
+            buildDir = new File(buildDir.toString() + new String("-" + System.nanoTime()));
+        }
+
+        this.cc.setDirectory(buildDir);
         try {
             cc.call();
             return true;
