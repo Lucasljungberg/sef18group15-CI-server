@@ -18,8 +18,10 @@ The sendEmail function is implemented in the SendEmail.java file and tested in t
 
 
 
-### Commit status               -- to be done
+### Commit status               
+A HTTP-post request is sent to github referencing a certain commit, that will mark the commit as fail/success depending on the success of the build in the CI. This is implemented in GitStatusNotification.java using the github Status API.
 
+For privacy concerns this is not tested in any of the test cases since that would require us to push log in information.
 
 
 ## Instructions.
