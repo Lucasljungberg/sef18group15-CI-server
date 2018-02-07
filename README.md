@@ -5,9 +5,6 @@ This is a small CI-server with some basic functionality for Maven based projects
 
 Documentation can be found in [the wiki pages](https://github.com/Lucasljungberg/sef18group15-CI-server/wiki)
 
-Trigger webhook
-
-
 ## Compilation and testing
 This project is a Maven project, so the command-line tools available has been used to compile and test the program. This is also what is used by the program to test building and running the test cases of the project to determine the success of the build.
 
@@ -25,6 +22,23 @@ A HTTP-post request is sent to github referencing a certain commit, that will ma
 
 For privacy concerns this is not tested in any of the test cases since that would require us to push log in information.
 
+### Config file
+The CI-server has a configuration file that allows some versatility in how authentication and notification is handled.
+
+Some more info can be found [in the wiki pages](https://github.com/Lucasljungberg/sef18group15-CI-server/wiki/Config)
+
+#### Authentication
+For authentication (key: "auth_type"), there are three different modes to choose from:
+
+**SSH** - Authentication through SSH private-key file. This requires the key `"ssh_id_location"` to be an absolute path to the SSH identity. If it's not specified, `"~/.ssh/id_rsa"` is used.  
+**LOGIN** - Authentication through username/password combination. These are specified with the keys `"username"` and `"password"`. The default is an emtpy string, so these needs to be specified.  
+**PUBLIC** - This indicates no authentication is needed for the repository. No additional fields are needed.
+
+#### Notification
+There are 3 modes for notification (key `"notification_type"`) which are:
+
+**EMAIL** - The result will be sent as an email to the pusher's email. This requires the fields `"email_sender"` and `"email_password"` to be set and valid.  
+**COMMITSTATUS** - The result will be set as a commit status. This notification-type requires the authentication-type to be LOGIN, as those credentials are needed for setting the commit status.
 
 ## Instructions.
 1. Folders are structured in a format suitable for Maven. All the tests are located in the test folder, and all the src files in the main folder. Compilation and testing are then done by executing the following commands, while being in the project directory: "mvn compile" and "mvn test".
