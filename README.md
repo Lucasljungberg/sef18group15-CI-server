@@ -36,9 +36,11 @@ The sendEmail function is implemented in the SendEmail.java file and tested in t
 5. Command executer
 
 ## Olzhas Kadyrakun
-
-3. Assisted with initial Git-handling
+1. Handled email notifications.
+2. Assisted with initial Git-handling
+3. Worked on documentation:  API (wikis) & README file
 4. Linking together the different individual parts
+
 
 ## Sara Engelhardt
 1. Commit-status notification
