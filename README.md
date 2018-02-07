@@ -5,6 +5,8 @@ This is a small CI-server with some basic functionality for Maven based projects
 
 Documentation can be found in [the wiki pages](https://github.com/Lucasljungberg/sef18group15-CI-server/wiki)
 
+Trigger webhook
+
 
 ## Compilation and testing
 This project is a Maven project, so the command-line tools available has been used to compile and test the program. This is also what is used by the program to test building and running the test cases of the project to determine the success of the build.
