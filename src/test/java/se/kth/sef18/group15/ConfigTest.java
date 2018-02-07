@@ -48,7 +48,7 @@ public class ConfigTest {
                 assertEquals(Config.AuthenticationType.LOGIN, this.config.getAuthenticationType());
 
                 // There should also be accessible username and password fields
-                assertEquals(this.config.getUsername(), this.data.get("username"));
+                assertEquals(this.config.getUsername(), "thisisanonvalidname");
                 assertEquals(this.config.getPassword(), this.data.get("password"));
             } else {
                 // Because given authentication-type is LOGIN, SSH-identity location
