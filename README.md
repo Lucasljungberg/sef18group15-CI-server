@@ -39,6 +39,7 @@ There are 3 modes for notification (key `"notification_type"`) which are:
 
 **EMAIL** - The result will be sent as an email to the pusher's email. This requires the fields `"email_sender"` and `"email_password"` to be set and valid.  
 **COMMITSTATUS** - The result will be set as a commit status. This notification-type requires the authentication-type to be LOGIN, as those credentials are needed for setting the commit status.
+**NONE** - The results are not reported.
 
 ## Instructions.
 1. Folders are structured in a format suitable for Maven. All the tests are located in the test folder, and all the src files in the main folder. Compilation and testing are then done by executing the following commands, while being in the project directory: "mvn compile" and "mvn test".
